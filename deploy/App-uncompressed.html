@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CustomUrl</title>
+
+    <script type="text/javascript" src="/apps/2.1/sdk.js"></script>
+
+    <script type="text/javascript">
+        Rally.onReady(function () {
+                Ext.define('CustomUrlApp', {
+    extend: 'Rally.app.App',
+    componentCls: 'app',
+    layout: 'fit',
+    config: {
+        defaultSettings: {
+            url: ''
+        }
+    },
+    getSettingsFields: function () {
+        return [{
+            xtype: 'rallytextfield',
+            name: 'url',
+            fieldLabel: 'Url',
+            allowBlank: false,
+            anchor: '100%',
+            cls: 'query-field',
+            margin: '0 70 0 0',
+            plugins: [
+                'rallyfieldvalidationui',
+                {
+                    ptype: 'rallyhelpfield',
+                    helpId: 301,
+                    helpTextKey: 'More Info',
+                },
+            ],
+            validator: function (value) {
+                if (!!value && document.URL.indexOf("https://") === 0 && value.indexOf("http://") === 0) {
+                    return 'Url must begin with http:// or https://';
+                }
+                return true;
+            },
+            validateOnBlur: false,
+            validateOnChange: false,
+        }];
+    },
+    launch: function () {
+        this.add({
+            xtype: 'component',
+            autoEl: {
+                tag: 'iframe',
+                frameborder: 0,
+                src: this.getSetting('url')
+            }
+        });
+    }
+});
+
+
+            Rally.launchApp('CustomUrlApp', {
+                name:"CustomUrl",
+	            parentRepos:""
+            });
+
+        });
+    </script>
+
+
+
+    <style type="text/css">
+        .app {
+  /* Add app styles here */
+}
+
+    </style>
+</head>
+<body>
+</body>
+</html>
